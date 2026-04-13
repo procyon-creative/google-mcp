@@ -15,13 +15,20 @@ scripts/
 .DS_Store
 tsconfig.json
 tsconfig.test.json
+eslint.config.js
 
-# Git and IDE
+# Git, CI, and IDE
 .git
 .gitignore
+.github/
 .vscode/
 .idea/
+.claude/
+.cursorignore
+
+# Project docs (not for consumers)
+CLAUDE.md
+.dockerignore
 
 # Other
 node_modules/
-CLAUDE.md

@@ -1,7 +1,8 @@
 {
-    "name": "google-mcp",
+    "name": "@procyon-creative/google-mcp",
     "version": "0.1.0",
     "description": "Multi-account wrapper for Google Drive MCP with setup wizard and Claude-assisted automation",
+    "author": "Procyon Creative Services",
     "license": "MIT",
     "type": "module",
     "bin": {
@@ -12,6 +13,28 @@
         "README.md",
         "LICENSE"
     ],
+    "keywords": [
+        "mcp",
+        "google-drive",
+        "google-workspace",
+        "multi-account",
+        "oauth2",
+        "claude",
+        "claude-code",
+        "model-context-protocol",
+        "setup-wizard"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/procyon-creative/google-mcp.git"
+    },
+    "bugs": {
+        "url": "https://github.com/procyon-creative/google-mcp/issues"
+    },
+    "homepage": "https://github.com/procyon-creative/google-mcp#readme",
     "scripts": {
         "typecheck": "tsc --noEmit",
         "build": "npm run typecheck && node scripts/build.js",
