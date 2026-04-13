@@ -1,0 +1,43 @@
+{
+    "name": "google-mcp",
+    "version": "0.1.0",
+    "description": "Multi-account wrapper for Google Drive MCP with setup wizard and Claude-assisted automation",
+    "license": "MIT",
+    "type": "module",
+    "bin": {
+        "google-mcp": "./dist/index.js"
+    },
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "typecheck": "tsc --noEmit",
+        "build": "npm run typecheck && node scripts/build.js",
+        "start": "node dist/index.js",
+        "auth": "node dist/index.js auth",
+        "setup": "node dist/index.js setup",
+        "watch": "node scripts/build.js --watch",
+        "test": "npm run test:build && node --test .tmp-test/test/**/*.test.js",
+        "test:build": "shx rm -rf .tmp-test && tsc -p tsconfig.test.json && shx cp package.json .tmp-test/",
+        "test:unit": "npm run test:build && node --test .tmp-test/test/accounts.test.js .tmp-test/test/setup.test.js .tmp-test/test/auth.test.js .tmp-test/test/cli.test.js",
+        "lint": "tsc --noEmit && eslint src/",
+        "lint:eslint": "eslint src/"
+    },
+    "dependencies": {
+        "@google-cloud/local-auth": "^3.0.1",
+        "@inquirer/prompts": "^8.3.2",
+        "@piotr-agier/google-drive-mcp": "^2.0.2",
+        "open": "^10.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.9.3",
+        "@typescript-eslint/eslint-plugin": "^8.56.0",
+        "@typescript-eslint/parser": "^8.56.0",
+        "esbuild": "^0.25.8",
+        "eslint": "^9.39.3",
+        "shx": "^0.4.0",
+        "typescript": "^5.6.2"
+    }
+}

@@ -1,0 +1,27 @@
+# Source files (only publish dist)
+src/
+test/
+scripts/
+.tmp-test/
+
+# Configuration and credentials
+.env
+.env.*
+*.keys.json
+*.tokens.json
+
+# Development files
+*.log
+.DS_Store
+tsconfig.json
+tsconfig.test.json
+
+# Git and IDE
+.git
+.gitignore
+.vscode/
+.idea/
+
+# Other
+node_modules/
+CLAUDE.md
