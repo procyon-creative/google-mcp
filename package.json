@@ -1,6 +1,6 @@
 {
     "name": "@procyon-creative/google-mcp",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Multi-account wrapper for Google Drive MCP with setup wizard and Claude-assisted automation",
     "author": "Procyon Creative Services",
     "license": "MIT",
