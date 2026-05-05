@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * google-mcp — Multi-account wrapper for @piotr-agier/google-drive-mcp.
  *
