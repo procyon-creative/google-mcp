@@ -6,7 +6,7 @@
     "license": "MIT",
     "type": "module",
     "bin": {
-        "google-mcp": "./dist/index.js"
+        "google-mcp": "dist/index.js"
     },
     "files": [
         "dist/",

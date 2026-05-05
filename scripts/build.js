@@ -17,6 +17,7 @@ const buildOptions = {
   format: 'esm',
   packages: 'external',
   sourcemap: true,
+  banner: { js: '#!/usr/bin/env node' },
 };
 
 if (isWatch) {
