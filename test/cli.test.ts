@@ -46,3 +46,15 @@ test('cli: unknown command shows error and help', () => {
     assert.ok(output.includes('Unknown command'));
   }
 });
+
+// start: refuses to spawn upstream (which would pop a browser) when no tokens
+test('cli: start exits with auth instructions when account has no tokens.json', () => {
+  try {
+    cli('start --account totally-unconfigured@example.com');
+    assert.fail('should have exited with error');
+  } catch (e: any) {
+    const output = e.stdout?.toString() || e.stderr?.toString() || e.message;
+    assert.ok(/not authenticated|no tokens\.json/i.test(output), `got: ${output}`);
+    assert.ok(output.includes('google-mcp auth'));
+  }
+});

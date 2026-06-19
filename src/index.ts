@@ -6,6 +6,7 @@
  */
 
 import { spawn } from 'child_process';
+import { existsSync, readFileSync } from 'fs';
 import {
   slugifyEmail, listAccounts, getDefaultAccount,
   getAccountSetup, getAccountCredentialsPath, getAccountTokenPath,
@@ -90,7 +91,7 @@ function resolveAccountSlug(account?: string): string {
   if (defaultSlug) return defaultSlug;
 
   console.error('No account specified and no default account configured.');
-  console.error('Run: node dist/index.js setup');
+  console.error('Run: google-mcp setup');
   process.exit(1);
 }
 
@@ -102,7 +103,7 @@ async function showAccounts(account?: string) {
     accounts = accounts.filter(a => a.email === account || a.slug === account);
   }
   if (accounts.length === 0) {
-    console.log(account ? `Account "${account}" not found.` : 'No accounts configured. Run: node dist/index.js setup');
+    console.log(account ? `Account "${account}" not found.` : 'No accounts configured. Run: google-mcp setup');
     return;
   }
 
@@ -126,16 +127,53 @@ async function showAccounts(account?: string) {
   }
 }
 
-function startMcpServer(accountSlug: string) {
+/**
+ * Build env vars for the upstream MCP server in "external token mode".
+ *
+ * The upstream package will spawn a browser via the `open` npm package if it
+ * has to do an OAuth flow at runtime (missing token, or refresh token revoked).
+ * That is disruptive when Claude auto-starts the server in the background.
+ *
+ * Setting GOOGLE_DRIVE_MCP_ACCESS_TOKEN (plus refresh token + client creds)
+ * short-circuits the upstream's `authenticate()` entirely — see
+ * isExternalTokenMode() in @piotr-agier/google-drive-mcp. The user must
+ * explicitly run `google-mcp auth --account <email>` to (re-)authenticate.
+ *
+ * Returns null if tokens.json is missing — caller should refuse to start.
+ */
+function buildExternalTokenEnv(accountSlug: string): Record<string, string> | null {
   const credPath = getAccountCredentialsPath(accountSlug);
   const tokenPath = getAccountTokenPath(accountSlug);
 
+  if (!existsSync(tokenPath)) return null;
+
+  const tokens = JSON.parse(readFileSync(tokenPath, 'utf-8'));
+  const creds = JSON.parse(readFileSync(credPath, 'utf-8'));
+  const installed = creds.installed ?? creds.web ?? {};
+
+  const env: Record<string, string> = {
+    GOOGLE_DRIVE_OAUTH_CREDENTIALS: credPath,
+    GOOGLE_DRIVE_MCP_TOKEN_PATH: tokenPath,
+  };
+  if (tokens.access_token) env.GOOGLE_DRIVE_MCP_ACCESS_TOKEN = tokens.access_token;
+  if (tokens.refresh_token) env.GOOGLE_DRIVE_MCP_REFRESH_TOKEN = tokens.refresh_token;
+  if (installed.client_id) env.GOOGLE_DRIVE_MCP_CLIENT_ID = installed.client_id;
+  if (installed.client_secret) env.GOOGLE_DRIVE_MCP_CLIENT_SECRET = installed.client_secret;
+  return env;
+}
+
+function startMcpServer(accountSlug: string, accountLabel: string) {
+  const tokenEnv = buildExternalTokenEnv(accountSlug);
+  if (!tokenEnv) {
+    console.error(
+      `Account "${accountLabel}" is not authenticated — no tokens.json on disk.\n` +
+      `Run: google-mcp auth --account ${accountLabel}`
+    );
+    process.exit(1);
+  }
+
   const child = spawn('npx', ['@piotr-agier/google-drive-mcp'], {
-    env: {
-      ...process.env,
-      GOOGLE_DRIVE_OAUTH_CREDENTIALS: credPath,
-      GOOGLE_DRIVE_MCP_TOKEN_PATH: tokenPath,
-    },
+    env: { ...process.env, ...tokenEnv },
     stdio: [process.stdin, process.stdout, 'inherit'],
   });
 
@@ -210,7 +248,7 @@ async function main() {
     case 'start':
     case undefined: {
       const slug = resolveAccountSlug(account);
-      startMcpServer(slug);
+      startMcpServer(slug, account ?? slug);
       break;
     }
 
