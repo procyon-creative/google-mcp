@@ -32,7 +32,7 @@ export async function runAuth(accountSlug: string): Promise<void> {
   if (!existsSync(keyfilePath)) {
     throw new Error(
       `Credentials file not found: ${keyfilePath}\n` +
-      'Run setup first: node dist/index.js setup'
+      'Run setup first: google-mcp setup'
     );
   }
 

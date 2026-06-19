@@ -568,6 +568,8 @@ export async function runSetup(opts: SetupOptions = {}): Promise<void> {
     const serverName = mcpServerName(accountEmail);
     heading('Setup Complete!');
     console.log('  Add to Claude Code:\n');
-    console.log(`  ${DIM}claude mcp add -s user ${serverName} node /path/to/dist/index.js -- --account ${accountEmail}${RESET}\n`);
+    console.log(`  ${DIM}claude mcp add -s user ${serverName} -- npx -y @procyon-creative/google-mcp --account ${accountEmail}${RESET}\n`);
+    console.log(`  ${DIM}# or, if running from this checkout:${RESET}`);
+    console.log(`  ${DIM}claude mcp add -s user ${serverName} -- node ${process.argv[1]} --account ${accountEmail}${RESET}\n`);
   }
 }

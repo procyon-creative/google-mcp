@@ -14,24 +14,41 @@ The actual MCP tools (Drive, Docs, Sheets, Slides, Calendar) come from [`@piotr-
 ## Quick Start
 
 ```bash
-git clone <repo-url>
-cd google-mcp
-npm install
-npm run build
-
-# Set up a Google account
-npm run setup
+# Run the setup wizard (no install needed)
+npx -y @procyon-creative/google-mcp setup
 
 # Add to Claude Code
-claude mcp add -s user google-user-example node /path/to/dist/index.js -- --account user@example.com
+claude mcp add -s user google-user-example -- npx -y @procyon-creative/google-mcp --account user@example.com
 ```
+
+Prefer a pinned global install? See [Install](#install) below.
+
+## Install
+
+Pick whichever fits your workflow — every example below works with all three:
+
+```bash
+# 1. No install (always latest)
+npx -y @procyon-creative/google-mcp <command>
+
+# 2. Global install (pinned until you upgrade)
+npm install -g @procyon-creative/google-mcp
+google-mcp <command>
+
+# 3. From a clone (for development)
+git clone https://github.com/procyon-creative/google-mcp.git
+cd google-mcp && npm install && npm run build
+node dist/index.js <command>
+```
+
+The rest of this README uses `google-mcp` for brevity. Substitute `npx -y @procyon-creative/google-mcp` or `node dist/index.js` as needed.
 
 ## Setup
 
 ### Interactive Wizard
 
 ```bash
-npm run setup
+google-mcp setup
 ```
 
 The wizard walks through:
@@ -56,9 +73,9 @@ The wizard invokes `claude -p --chrome` for each browser step.
 Pre-fill answers to skip prompts:
 
 ```bash
-npm run setup -- --account user@gmail.com --project-id my-project --mode claude
-npm run setup -- --account user@gmail.com --step audience --mode claude
-npm run setup -- --credentials ~/Downloads/client_secret*.json --no-auth
+google-mcp setup --account user@gmail.com --project-id my-project --mode claude
+google-mcp setup --account user@gmail.com --step audience --mode claude
+google-mcp setup --credentials ~/Downloads/client_secret*.json --no-auth
 ```
 
 Available flags: `--account`, `--project-id`, `--credentials`, `--mode` (manual/claude), `--step`, `--gcloud-account`, `--skip-browser`, `--skip-gcloud`, `--create-project`, `--run-auth`, `--no-auth`
@@ -80,8 +97,8 @@ Each account gets its own credential directory:
 ### List Accounts
 
 ```bash
-node dist/index.js accounts
-node dist/index.js accounts --account jane.doe@gmail.com
+google-mcp accounts
+google-mcp accounts --account jane.doe@gmail.com
 ```
 
 Shows setup progress per account:
@@ -98,16 +115,18 @@ Each account becomes a separate MCP server with a unique name:
 
 ```bash
 claude mcp add -s user google-user-example \
-  node /path/to/dist/index.js -- --account user@example.com
+  -- npx -y @procyon-creative/google-mcp --account user@example.com
 
 claude mcp add -s user google-jane-doe-gmail \
-  node /path/to/dist/index.js -- --account jane.doe@gmail.com
+  -- npx -y @procyon-creative/google-mcp --account jane.doe@gmail.com
 ```
+
+If you globally installed, swap `npx -y @procyon-creative/google-mcp` for `google-mcp`. From a checkout, use `node /absolute/path/to/dist/index.js`.
 
 ### Authenticate
 
 ```bash
-node dist/index.js auth --account jane.doe@gmail.com
+google-mcp auth --account jane.doe@gmail.com
 ```
 
 ## Available Tools
