@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/procyon-creative/google-mcp/compare/v1.0.0...v1.0.1) (2026-06-20)
+
+
+### Bug Fixes
+
+* show OAuth scopes as copy-pasteable plaintext block ([#12](https://github.com/procyon-creative/google-mcp/issues/12)) ([02199bd](https://github.com/procyon-creative/google-mcp/commit/02199bde3371fb514b6d99a462782ae1e00e99f9))
+
 ## 1.0.0 (2026-06-20)
 
 
