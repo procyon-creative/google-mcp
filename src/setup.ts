@@ -164,7 +164,7 @@ export function buildSetupSteps(projectId: string, accountEmail: string): SetupS
       url: consentScopesUrl(projectId),
       actions: [
         'Click "Add or Remove Scopes"',
-        ...REQUIRED_SCOPES.map(scope => `Add scope: ${scope}`),
+        `Paste these scopes (one per line):\n${REQUIRED_SCOPES.join('\n')}`,
         'Click "Update" then "Save"',
       ],
     },
