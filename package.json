@@ -65,7 +65,7 @@
     "@types/node": "^22.9.3",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
     "@typescript-eslint/parser": "^8.56.0",
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.28.1",
     "eslint": "^9.39.3",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
