@@ -142,6 +142,24 @@ npm run watch          # esbuild watch mode
 npm run lint           # tsc + eslint
 ```
 
+## Linting
+
+Pre-commit hooks run automatically on `git commit` and lint only staged
+`src/**/*.ts` files.
+
+To run the staged-file linter manually:
+
+```bash
+npx lint-staged
+```
+
+To run the full repo lint/test checks:
+
+```bash
+npm run lint
+npm test
+```
+
 ### Architecture
 
 This is a thin CLI wrapper (4 source files, ~1000 lines):
