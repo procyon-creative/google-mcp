@@ -44,7 +44,7 @@
     "watch": "node scripts/build.js --watch",
     "prepare": "husky",
     "test": "npm run test:build && npm run test:run",
-    "test:run": "node --test .tmp-test/test/**/*.test.js",
+    "test:run": "node --test .tmp-test/test/*.test.js",
     "test:build": "shx rm -rf .tmp-test && tsc -p tsconfig.test.json && shx cp package.json .tmp-test/",
     "test:unit": "npm run test:build && npm run test:run",
     "lint": "tsc --noEmit && eslint src/",
